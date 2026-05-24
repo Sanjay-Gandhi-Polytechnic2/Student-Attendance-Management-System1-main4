@@ -38,6 +38,12 @@ function App() {
     const [isSearching, setIsSearching] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [directoryActive, setDirectoryActive] = useState(false);
+    const [autoConfig, setAutoConfig] = useState({
+        autoAbsentActive: true,
+        autoAbsentTime: '17:00',
+        autoNotifyActive: true,
+        autoResetTime: '00:00'
+    });
     const [settings, setSettings] = useState(() => {
         const saved = localStorage.getItem('portal_settings');
         const defaultSettings = {
@@ -63,7 +69,17 @@ function App() {
     useEffect(() => {
         loadStudents();
         loadUsers();
+        loadSystemConfig();
     }, []);
+
+    const loadSystemConfig = async () => {
+        try {
+            const data = await api.getSystemConfig();
+            setAutoConfig(data);
+        } catch (error) {
+            console.error("Failed to load system config:", error);
+        }
+    };
 
     const handleRefreshDirectory = async () => {
         setIsLoading(true);
@@ -300,6 +316,8 @@ function App() {
                     user={currentUser}
                     settings={settings}
                     setSettings={setSettings}
+                    autoConfig={autoConfig}
+                    setAutoConfig={setAutoConfig}
                     onDeleteAccount={handleDeleteAccount} 
                     onSyncRegistry={handleRefreshDirectory} 
                 />

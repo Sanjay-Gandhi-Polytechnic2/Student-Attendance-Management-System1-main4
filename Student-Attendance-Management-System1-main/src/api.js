@@ -272,6 +272,60 @@ export const api = {
             console.error('Update leave request status error:', error);
             throw error;
         }
+    },
+
+    // System Config endpoints
+    async getSystemConfig() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/config`);
+            if (!response.ok) throw new Error('Failed to fetch system configurations');
+            return response.json();
+        } catch (error) {
+            console.error('Get system config error:', error);
+            throw error;
+        }
+    },
+
+    async updateSystemConfig(configData) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/config`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(configData)
+            });
+            if (!response.ok) throw new Error('Failed to update system configurations');
+            return response.json();
+        } catch (error) {
+            console.error('Update system config error:', error);
+            throw error;
+        }
+    },
+
+    async simulateSweep() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/config/simulate-sweep`, {
+                method: 'POST'
+            });
+            if (!response.ok) throw new Error('Failed to execute sweep simulation');
+            return response.json();
+        } catch (error) {
+            console.error('Sweep simulation error:', error);
+            throw error;
+        }
+    },
+
+    async simulateReset() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/config/simulate-reset`, {
+                method: 'POST'
+            });
+            if (!response.ok) throw new Error('Failed to execute reset simulation');
+            return response.json();
+        } catch (error) {
+            console.error('Reset simulation error:', error);
+            throw error;
+        }
     }
 };
+
 

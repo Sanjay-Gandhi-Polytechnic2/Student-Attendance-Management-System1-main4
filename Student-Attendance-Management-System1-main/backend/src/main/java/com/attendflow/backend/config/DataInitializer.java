@@ -2,8 +2,10 @@ package com.attendflow.backend.config;
 
 import com.attendflow.backend.model.Student;
 import com.attendflow.backend.model.User;
+import com.attendflow.backend.model.SystemConfig;
 import com.attendflow.backend.repository.StudentRepository;
 import com.attendflow.backend.repository.UserRepository;
+import com.attendflow.backend.repository.SystemConfigRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +17,7 @@ import java.util.List;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(StudentRepository studentRepository, UserRepository userRepository) {
+    CommandLineRunner initDatabase(StudentRepository studentRepository, UserRepository userRepository, SystemConfigRepository systemConfigRepository) {
         return args -> {
             System.out.println("--- Starting Database Initialization ---");
 
@@ -44,7 +46,16 @@ public class DataInitializer {
                 System.out.println("Users already exist. Skipping user initialization.");
             }
 
+            // Default Automatic Attendance Configuration
+            if (systemConfigRepository.count() == 0) {
+                systemConfigRepository.save(new SystemConfig(1L, true, "17:00", true, "00:00"));
+                System.out.println("Inserted default automatic attendance configuration.");
+            } else {
+                System.out.println("System configuration already exists. Skipping initialization.");
+            }
+
             System.out.println("--- Database Initialization Complete ---");
         };
     }
 }
+
