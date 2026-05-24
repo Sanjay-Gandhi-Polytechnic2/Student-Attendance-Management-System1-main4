@@ -1,3 +1,4 @@
+C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\controller\TimetableSlotController.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\repository\SystemConfigRepository.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\controller\SystemConfigController.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\model\SystemConfig.java
@@ -5,12 +6,14 @@ C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Atte
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\config\SecurityConfig.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\controller\AuthController.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\config\DataInitializer.java
+C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\model\TimetableSlot.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\repository\UserRepository.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\service\AttendanceAutomationService.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\model\Student.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\model\LeaveRequest.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\service\EmailService.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\AttendFlowApplication.java
+C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\repository\TimetableSlotRepository.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\model\User.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\controller\LeaveRequestController.java
 C:\Users\Shaik\Downloads\Student-Attendance-Management-System1-main\Student-Attendance-Management-System1-main\backend\src\main\java\com\attendflow\backend\controller\StudentController.java

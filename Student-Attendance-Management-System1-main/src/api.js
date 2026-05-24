@@ -325,6 +325,71 @@ export const api = {
             console.error('Reset simulation error:', error);
             throw error;
         }
+    },
+
+    async getSchedules(branch, semester, teacherName) {
+        try {
+            let url = `${API_BASE_URL}/schedule`;
+            const params = [];
+            if (branch && semester) {
+                params.push(`branch=${encodeURIComponent(branch)}`);
+                params.push(`semester=${encodeURIComponent(semester)}`);
+            } else if (teacherName) {
+                params.push(`teacherName=${encodeURIComponent(teacherName)}`);
+            }
+            if (params.length > 0) {
+                url += `?${params.join('&')}`;
+            }
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to fetch schedule slots');
+            return response.json();
+        } catch (error) {
+            console.error('Fetch schedule error:', error);
+            throw error;
+        }
+    },
+
+    async createScheduleSlot(slotData) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/schedule`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slotData)
+            });
+            if (!response.ok) throw new Error('Failed to create schedule slot');
+            return response.json();
+        } catch (error) {
+            console.error('Create schedule slot error:', error);
+            throw error;
+        }
+    },
+
+    async updateScheduleSlot(id, slotData) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/schedule/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slotData)
+            });
+            if (!response.ok) throw new Error('Failed to update schedule slot');
+            return response.json();
+        } catch (error) {
+            console.error('Update schedule slot error:', error);
+            throw error;
+        }
+    },
+
+    async deleteScheduleSlot(id) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/schedule/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Failed to delete schedule slot');
+            return true;
+        } catch (error) {
+            console.error('Delete schedule slot error:', error);
+            throw error;
+        }
     }
 };
 

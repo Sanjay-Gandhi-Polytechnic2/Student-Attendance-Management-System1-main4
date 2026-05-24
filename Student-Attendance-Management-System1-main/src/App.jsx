@@ -324,7 +324,7 @@ function App() {
             )}
             {activeTab === 'profile' && <ProfilePage user={currentUser} onDeleteAccount={handleDeleteAccount} />}
 
-            {activeTab === 'schedule' && <SchedulePage />}
+            {activeTab === 'schedule' && <SchedulePage user={currentUser} students={students} />}
 
             {activeTab === 'curriculum' && <CurriculumHub />}
 

@@ -3,9 +3,11 @@ package com.attendflow.backend.config;
 import com.attendflow.backend.model.Student;
 import com.attendflow.backend.model.User;
 import com.attendflow.backend.model.SystemConfig;
+import com.attendflow.backend.model.TimetableSlot;
 import com.attendflow.backend.repository.StudentRepository;
 import com.attendflow.backend.repository.UserRepository;
 import com.attendflow.backend.repository.SystemConfigRepository;
+import com.attendflow.backend.repository.TimetableSlotRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +19,7 @@ import java.util.List;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(StudentRepository studentRepository, UserRepository userRepository, SystemConfigRepository systemConfigRepository) {
+    CommandLineRunner initDatabase(StudentRepository studentRepository, UserRepository userRepository, SystemConfigRepository systemConfigRepository, TimetableSlotRepository timetableSlotRepository) {
         return args -> {
             System.out.println("--- Starting Database Initialization ---");
 
@@ -52,6 +54,24 @@ public class DataInitializer {
                 System.out.println("Inserted default automatic attendance configuration.");
             } else {
                 System.out.println("System configuration already exists. Skipping initialization.");
+            }
+
+            // Default Timetable Slots
+            if (timetableSlotRepository.count() == 0) {
+                List<TimetableSlot> initialSlots = Arrays.asList(
+                        new TimetableSlot(null, "MON", "09:00 AM - 10:00 AM", "Advanced Mathematics", "RL-301", "teacher", "DCS", "1", "#6366f1"),
+                        new TimetableSlot(null, "MON", "10:00 AM - 11:00 AM", "Cloud Computing Infrastructure", "LAB-04", "Prof. A. Verma", "DCS", "1", "#10b981"),
+                        new TimetableSlot(null, "MON", "11:00 AM - 12:00 PM", "Network Security", "RL-305", "Prof. R. Kumar", "DCS", "1", "#8b5cf6"),
+                        new TimetableSlot(null, "MON", "12:00 PM - 01:00 PM", "Institutional Protocol", "HALL-A", "Dr. K. Gupta", "DCS", "1", "#f59e0b"),
+                        new TimetableSlot(null, "MON", "02:00 PM - 03:00 PM", "Cryptography & Security", "RL-302", "Prof. M. Khan", "DCS", "1", "#ef4444"),
+                        new TimetableSlot(null, "TUE", "09:00 AM - 10:00 AM", "Network Security", "RL-305", "Prof. R. Kumar", "DCS", "1", "#8b5cf6"),
+                        new TimetableSlot(null, "TUE", "10:00 AM - 11:00 AM", "Advanced Mathematics", "RL-301", "teacher", "DCS", "1", "#6366f1"),
+                        new TimetableSlot(null, "TUE", "11:00 AM - 12:00 PM", "Cloud Computing Infrastructure", "LAB-04", "Prof. A. Verma", "DCS", "1", "#10b981")
+                );
+                timetableSlotRepository.saveAll(initialSlots);
+                System.out.println("Inserted 8 default timetable slots.");
+            } else {
+                System.out.println("Timetable slots already exist. Skipping initialization.");
             }
 
             System.out.println("--- Database Initialization Complete ---");
