@@ -57,19 +57,49 @@ public class DataInitializer {
             }
 
             // Default Timetable Slots
-            if (timetableSlotRepository.count() == 0) {
+            if (timetableSlotRepository.count() <= 8) {
+                if (timetableSlotRepository.count() > 0) {
+                    timetableSlotRepository.deleteAll();
+                    System.out.println("Cleaned up old 8-slot timetable configuration.");
+                }
                 List<TimetableSlot> initialSlots = Arrays.asList(
+                        // Monday
                         new TimetableSlot(null, "MON", "09:00 AM - 10:00 AM", "Advanced Mathematics", "RL-301", "teacher", "DCS", "1", "#6366f1"),
                         new TimetableSlot(null, "MON", "10:00 AM - 11:00 AM", "Cloud Computing Infrastructure", "LAB-04", "Prof. A. Verma", "DCS", "1", "#10b981"),
                         new TimetableSlot(null, "MON", "11:00 AM - 12:00 PM", "Network Security", "RL-305", "Prof. R. Kumar", "DCS", "1", "#8b5cf6"),
                         new TimetableSlot(null, "MON", "12:00 PM - 01:00 PM", "Institutional Protocol", "HALL-A", "Dr. K. Gupta", "DCS", "1", "#f59e0b"),
                         new TimetableSlot(null, "MON", "02:00 PM - 03:00 PM", "Cryptography & Security", "RL-302", "Prof. M. Khan", "DCS", "1", "#ef4444"),
+                        
+                        // Tuesday
                         new TimetableSlot(null, "TUE", "09:00 AM - 10:00 AM", "Network Security", "RL-305", "Prof. R. Kumar", "DCS", "1", "#8b5cf6"),
                         new TimetableSlot(null, "TUE", "10:00 AM - 11:00 AM", "Advanced Mathematics", "RL-301", "teacher", "DCS", "1", "#6366f1"),
-                        new TimetableSlot(null, "TUE", "11:00 AM - 12:00 PM", "Cloud Computing Infrastructure", "LAB-04", "Prof. A. Verma", "DCS", "1", "#10b981")
+                        new TimetableSlot(null, "TUE", "11:00 AM - 12:00 PM", "Cloud Computing Infrastructure", "LAB-04", "Prof. A. Verma", "DCS", "1", "#10b981"),
+                        
+                        // Wednesday
+                        new TimetableSlot(null, "WED", "09:00 AM - 10:00 AM", "Web Technologies Lab", "LAB-03", "Prof. S. Sharma", "DCS", "1", "#06b6d4"),
+                        new TimetableSlot(null, "WED", "10:00 AM - 11:00 AM", "Digital Logic Design", "RL-303", "Prof. A. Bose", "DCS", "1", "#f59e0b"),
+                        new TimetableSlot(null, "WED", "11:00 AM - 12:00 PM", "Data Structures & Algorithms", "RL-305", "Dr. P. Mehta", "DCS", "1", "#8b5cf6"),
+                        new TimetableSlot(null, "WED", "12:00 PM - 01:00 PM", "Advanced Mathematics", "RL-301", "teacher", "DCS", "1", "#6366f1"),
+
+                        // Thursday
+                        new TimetableSlot(null, "THU", "09:00 AM - 10:00 AM", "Cryptography & Security", "RL-302", "Prof. M. Khan", "DCS", "1", "#ef4444"),
+                        new TimetableSlot(null, "THU", "10:00 AM - 11:00 AM", "Data Structures & Algorithms", "RL-305", "Dr. P. Mehta", "DCS", "1", "#8b5cf6"),
+                        new TimetableSlot(null, "THU", "11:00 AM - 12:00 PM", "Institutional Protocol", "HALL-A", "Dr. K. Gupta", "DCS", "1", "#f59e0b"),
+                        new TimetableSlot(null, "THU", "02:00 PM - 03:00 PM", "Network Security", "RL-305", "Prof. R. Kumar", "DCS", "1", "#8b5cf6"),
+
+                        // Friday
+                        new TimetableSlot(null, "FRI", "09:00 AM - 10:00 AM", "Cloud Computing Infrastructure", "LAB-04", "Prof. A. Verma", "DCS", "1", "#10b981"),
+                        new TimetableSlot(null, "FRI", "10:00 AM - 11:00 AM", "Web Technologies Lab", "LAB-03", "Prof. S. Sharma", "DCS", "1", "#06b6d4"),
+                        new TimetableSlot(null, "FRI", "11:00 AM - 12:00 PM", "Digital Logic Design", "RL-303", "Prof. A. Bose", "DCS", "1", "#f59e0b"),
+                        new TimetableSlot(null, "FRI", "12:00 PM - 01:00 PM", "Cryptography & Security", "RL-302", "Prof. M. Khan", "DCS", "1", "#ef4444"),
+
+                        // Saturday
+                        new TimetableSlot(null, "SAT", "09:00 AM - 10:00 AM", "Advanced Mathematics", "RL-301", "teacher", "DCS", "1", "#6366f1"),
+                        new TimetableSlot(null, "SAT", "10:00 AM - 11:00 AM", "Network Security Lab", "LAB-02", "Prof. R. Kumar", "DCS", "1", "#8b5cf6"),
+                        new TimetableSlot(null, "SAT", "11:00 AM - 12:00 PM", "Technical Seminar", "AUD-01", "Dr. K. Gupta", "DCS", "1", "#ec4899")
                 );
                 timetableSlotRepository.saveAll(initialSlots);
-                System.out.println("Inserted 8 default timetable slots.");
+                System.out.println("Inserted comprehensive default timetable slots (Mon-Sat).");
             } else {
                 System.out.println("Timetable slots already exist. Skipping initialization.");
             }
