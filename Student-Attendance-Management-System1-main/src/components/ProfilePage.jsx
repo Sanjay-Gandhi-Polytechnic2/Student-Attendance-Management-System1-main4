@@ -26,7 +26,9 @@ const ProfilePage = ({ user, onDeleteAccount }) => {
                     <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--border-color)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                             <span style={{ fontWeight: 600, color: 'var(--text-light)' }}>Member Class</span>
-                            <span style={{ fontWeight: 700 }}>Faculty-Node</span>
+                            <span style={{ fontWeight: 700 }}>
+                                {user?.role === 'HOD' ? 'HOD-Node' : (user?.role === 'STUDENT' ? 'Student-Node' : (user?.role === 'ADMIN' ? 'Admin-Node' : 'Faculty-Node'))}
+                            </span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span style={{ fontWeight: 600, color: 'var(--text-light)' }}>Join Date</span>
