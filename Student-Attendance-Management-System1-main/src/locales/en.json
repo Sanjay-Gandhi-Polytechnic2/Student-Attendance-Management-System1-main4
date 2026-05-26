@@ -1,0 +1,13 @@
+{
+  "welcome": "Welcome to AttendFlow",
+  "home": "Home",
+  "about": "About",
+  "contact": "Contact",
+  "login": "Login",
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "french": "Français",
+    "hindi": "हिन्दी"
+  }
+}

@@ -129,35 +129,4 @@ const Navbar = ({ onNavigateToLogin, onNavigateToRegister, onNavigateToDashboard
         </nav>
     );
 };
-import { useTranslation } from "react-i18next";
-
-function Navbar() {
-  const { t, i18n } = useTranslation();
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
-  return (
-    <div>
-      <h1>{t("welcome")}</h1>
-
-      <ul>
-        <li>{t("home")}</li>
-        <li>{t("about")}</li>
-        <li>{t("contact")}</li>
-        <li>{t("login")}</li>
-      </ul>
-
-      <button onClick={() => changeLanguage("en")}>
-        English
-      </button>
-
-      <button onClick={() => changeLanguage("hi")}>
-        हिन्दी
-      </button>
-    </div>
-  );
-}
 export default Navbar;
-
