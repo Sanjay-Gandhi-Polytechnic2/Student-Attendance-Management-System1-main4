@@ -4,8 +4,14 @@ import { Activity, Users, ClipboardList, TrendingUp, UserCheck, AlertTriangle, D
 import { api } from '../api';
 import { generateStudentReport, generateRegistryExport } from '../utils/exportUtils';
 import ClassSchedule from './ClassSchedule';
+import { translations } from '../utils/langUtils';
 
 const HodDashboard = ({ user, students = [], onNavigate, searchQuery = '', settings, setSettings, onDeleteAccount }) => {
+    const lang = settings?.language || 'English';
+    const t = (key, fallback) => {
+        return translations[lang]?.[key] || translations['English']?.[key] || fallback;
+    };
+
     const [showRegistryPopup, setShowRegistryPopup] = useState(false);
     const [isUpdatingKey, setIsUpdatingKey] = useState(false);
     const [oldKey, setOldKey] = useState('');
@@ -82,18 +88,18 @@ const HodDashboard = ({ user, students = [], onNavigate, searchQuery = '', setti
     return (
         <div className="animate-fade space-y-6">
             <header>
-                <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Dept. Intelligence Hub</h2>
-                <p style={{ color: 'var(--text-secondary)' }}>Welcome, {user?.username} | Institutional Oversight</p>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>{t('overview', 'Dept. Intelligence Hub')}</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>{t('welcome', 'Welcome')}, {user?.username} | Institutional Oversight</p>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <HODMetricCard icon={<Users />} title="Identified Learners" value={filteredBySection.length} color="#6366f1" />
-                <HODMetricCard icon={<TrendingUp />} title="Presence Rate" value={`${presentRate}%`} color="#10b981" />
-                <HODMetricCard icon={<AlertTriangle />} title="Action Required" value={actionsRequiredCount} color="#ef4444" />
+                <HODMetricCard icon={<Users />} title={t('totalStudents', 'Identified Learners')} value={filteredBySection.length} color="#6366f1" />
+                <HODMetricCard icon={<TrendingUp />} title={t('avgAttendance', 'Presence Rate')} value={`${presentRate}%`} color="#10b981" />
+                <HODMetricCard icon={<AlertTriangle />} title={t('pendingRecords', 'Action Required')} value={actionsRequiredCount} color="#ef4444" />
             </div>
 
             <div className="card" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-light)', textTransform: 'uppercase' }}>Dept Section Filter:</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-light)', textTransform: 'uppercase' }}>{t('sectionFilter', 'Dept Section Filter')}:</span>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {['All', 'A', 'B', 'C', 'D'].map(s => (
                         <button 
@@ -120,7 +126,7 @@ const HodDashboard = ({ user, students = [], onNavigate, searchQuery = '', setti
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card">
-                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>Node Activity Stream</h3>
+                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>{t('recentClassActivity', 'Node Activity Stream')}</h3>
                     <div className="space-y-4">
                         {pendingLeaveRequests.length > 0 ? (
                             pendingLeaveRequests.map((req, idx) => (
@@ -142,28 +148,28 @@ const HodDashboard = ({ user, students = [], onNavigate, searchQuery = '', setti
                 </div>
 
                 <div className="card">
-                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>Quick Protocols</h3>
+                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>{t('sessionProtocols', 'Quick Protocols')}</h3>
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        <ProtocolButton icon={<CheckCircle />} label="Faculty Attendance Entry" onClick={() => onNavigate('faculty-attendance')} />
-                        <ProtocolButton icon={<FileText />} label="Generate Report" onClick={() => generateStudentReport(students)} />
-                        <ProtocolButton icon={<Download />} label="Download Registry" onClick={() => generateRegistryExport(students)} />
-                        <ProtocolButton icon={<Users />} label="Member Directory" onClick={() => onNavigate('students')} />
-                        <ProtocolButton icon={<Activity />} label="Analytics" onClick={() => onNavigate('reports')} />
-                        <ProtocolButton icon={<Users />} label="Leave Gateway" onClick={() => onNavigate('leave')} />
+                        <ProtocolButton icon={<CheckCircle />} label={t('facultyAttendanceEntry', 'Faculty Attendance Entry')} onClick={() => onNavigate('faculty-attendance')} />
+                        <ProtocolButton icon={<FileText />} label={t('generateReport', 'Generate Report')} onClick={() => generateStudentReport(students)} />
+                        <ProtocolButton icon={<Download />} label={t('downloadRegistry', 'Download Registry')} onClick={() => generateRegistryExport(students)} />
+                        <ProtocolButton icon={<Users />} label={t('memberDirectory', 'Member Directory')} onClick={() => onNavigate('students')} />
+                        <ProtocolButton icon={<Activity />} label={t('viewReports', 'Analytics')} onClick={() => onNavigate('reports')} />
+                        <ProtocolButton icon={<Users />} label={t('leaveGateway', 'Leave Gateway')} onClick={() => onNavigate('leave')} />
                         <ProtocolButton 
                             icon={<Eye />} 
-                            label="Dark Interface" 
+                            label={t('darkInterface', 'Dark Interface')} 
                             onClick={toggleDarkMode} 
                             highlight={settings?.darkMode} 
                         />
                         <ProtocolButton 
                             icon={<Lock />} 
-                            label="Update Access Key" 
+                            label={t('updateAccessKey', 'Update Access Key')} 
                             onClick={() => setIsUpdatingKey(true)} 
                         />
                         <ProtocolButton 
                             icon={<Trash2 />} 
-                            label="Delete Account" 
+                            label={t('deleteAccount', 'Delete Account')} 
                             onClick={onDeleteAccount} 
                             isDanger
                         />
@@ -179,21 +185,21 @@ const HodDashboard = ({ user, students = [], onNavigate, searchQuery = '', setti
 
             <div className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h3 style={{ fontWeight: 700 }}>Attendance Monitor</h3>
+                    <h3 style={{ fontWeight: 700 }}>{t('studentRegistry', 'Attendance Monitor')}</h3>
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <button 
                             onClick={handleFinalizeRegistry}
                             className="btn btn-secondary"
                             style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', borderColor: 'var(--success-color)', color: 'var(--success-color)', fontWeight: 700 }}
                         >
-                            Finalize Registry
+                            {t('finalizeRegistry', 'Finalize Registry')}
                         </button>
                         <button 
                             onClick={() => onNavigate('faculty-attendance')}
                             className="btn btn-primary"
                             style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
                         >
-                            Mark Attendance
+                            {t('facultyAttendanceEntry', 'Mark Attendance')}
                         </button>
                     </div>
                 </div>
@@ -254,7 +260,7 @@ const HodDashboard = ({ user, students = [], onNavigate, searchQuery = '', setti
             <ClassSchedule />
 
             <div className="card">
-                <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>The Team Members</h3>
+                <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>{t('teamMembers', 'The Team Members')}</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
                     {teamMembers.length > 0 ? teamMembers.map((name, idx) => (
                         <div key={idx} style={{ 

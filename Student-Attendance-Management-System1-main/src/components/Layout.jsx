@@ -20,8 +20,9 @@ import {
     Trash2,
     Book
 } from 'lucide-react';
+import { translations } from '../utils/langUtils';
 
-const Layout = ({ children, activeTab, setActiveTab, logout, user, onDeleteAccount, searchQuery, setSearchQuery }) => {
+const Layout = ({ children, activeTab, setActiveTab, logout, user, onDeleteAccount, searchQuery, setSearchQuery, settings }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [showNotifications, setShowNotifications] = useState(false);
     const role = user?.role || 'STUDENT';
@@ -32,40 +33,45 @@ const Layout = ({ children, activeTab, setActiveTab, logout, user, onDeleteAccou
         { id: 3, title: 'System Maintenance', time: '5 hours ago', type: 'warning', description: 'DB sync scheduled at 02:00 UTC' }
     ];
 
+    const lang = settings?.language || 'English';
+    const t = (key, fallback) => {
+        return translations[lang]?.[key] || translations['English']?.[key] || fallback;
+    };
+
     const navItems = {
         ADMIN: [
-            { id: 'admin-dashboard', label: 'Admin Hub', icon: <ShieldCheck size={20} /> },
-            { id: 'students', label: 'Student Directory', icon: <Users size={20} /> },
-            { id: 'reports', label: 'System Reports', icon: <FileBarChart size={20} /> },
-            { id: 'curriculum', label: 'Curriculum Hub', icon: <Book size={20} /> },
-            { id: 'settings', label: 'Settings', icon: <Settings size={20} /> },
-            { id: 'profile', label: 'My Identity', icon: <User size={20} /> },
+            { id: 'admin-dashboard', label: t('overview', 'Admin Hub'), icon: <ShieldCheck size={20} /> },
+            { id: 'students', label: t('studentRegistry', 'Student Directory'), icon: <Users size={20} /> },
+            { id: 'reports', label: t('viewReports', 'System Reports'), icon: <FileBarChart size={20} /> },
+            { id: 'curriculum', label: t('curriculumHub', 'Curriculum Hub'), icon: <Book size={20} /> },
+            { id: 'settings', label: t('settings', 'Settings'), icon: <Settings size={20} /> },
+            { id: 'profile', label: t('myIdentity', 'My Identity'), icon: <User size={20} /> },
         ],
         HOD: [
-            { id: 'hod-dashboard', label: 'Overview', icon: <Home size={20} /> },
-            { id: 'dashboard', label: 'Attendance Hub', icon: <LayoutGrid size={20} /> },
-            { id: 'leave', label: 'Leave Gateway', icon: <ClipboardList size={20} /> },
-            { id: 'curriculum', label: 'Curriculum', icon: <Book size={20} /> },
-            { id: 'reports', label: 'Analytics', icon: <Activity size={20} /> },
-            { id: 'settings', label: 'Settings', icon: <Settings size={20} /> },
-            { id: 'profile', label: 'My Identity', icon: <User size={20} /> },
+            { id: 'hod-dashboard', label: t('overview', 'Overview'), icon: <Home size={20} /> },
+            { id: 'dashboard', label: t('attendanceHub', 'Attendance Hub'), icon: <LayoutGrid size={20} /> },
+            { id: 'leave', label: t('leaveGateway', 'Leave Gateway'), icon: <ClipboardList size={20} /> },
+            { id: 'curriculum', label: t('curriculum', 'Curriculum'), icon: <Book size={20} /> },
+            { id: 'reports', label: t('viewReports', 'Analytics'), icon: <Activity size={20} /> },
+            { id: 'settings', label: t('settings', 'Settings'), icon: <Settings size={20} /> },
+            { id: 'profile', label: t('myIdentity', 'My Identity'), icon: <User size={20} /> },
         ],
         TEACHER: [
-            { id: 'faculty-dashboard', label: 'Faculty Dashboard', icon: <Home size={20} /> },
-            { id: 'faculty-attendance', label: 'Faculty Attendance Entry', icon: <UserCheck size={20} /> },
-            { id: 'leave', label: 'Leave Requests', icon: <ClipboardList size={20} /> },
-            { id: 'curriculum', label: 'Curriculum Hub', icon: <Book size={20} /> },
-            { id: 'reports', label: 'Class Analytics', icon: <FileBarChart size={20} /> },
-            { id: 'settings', label: 'Settings', icon: <Settings size={20} /> },
-            { id: 'profile', label: 'Account Settings', icon: <User size={20} /> },
+            { id: 'faculty-dashboard', label: t('overview', 'Faculty Dashboard'), icon: <Home size={20} /> },
+            { id: 'faculty-attendance', label: t('facultyAttendanceEntry', 'Faculty Attendance Entry'), icon: <UserCheck size={20} /> },
+            { id: 'leave', label: t('leaveGateway', 'Leave Requests'), icon: <ClipboardList size={20} /> },
+            { id: 'curriculum', label: t('curriculumHub', 'Curriculum Hub'), icon: <Book size={20} /> },
+            { id: 'reports', label: t('viewReports', 'Class Analytics'), icon: <FileBarChart size={20} /> },
+            { id: 'settings', label: t('settings', 'Settings'), icon: <Settings size={20} /> },
+            { id: 'profile', label: t('myIdentity', 'Account Settings'), icon: <User size={20} /> },
         ],
         STUDENT: [
-            { id: 'student-dashboard', label: 'My Terminal', icon: <Home size={20} /> },
-            { id: 'schedule', label: 'Academic Routine', icon: <Calendar size={20} /> },
-            { id: 'curriculum', label: 'Curriculum', icon: <Book size={20} /> },
-            { id: 'leave', label: 'Leave Application', icon: <ClipboardList size={20} /> },
-            { id: 'settings', label: 'Settings', icon: <Settings size={20} /> },
-            { id: 'profile', label: 'My Profile', icon: <User size={20} /> },
+            { id: 'student-dashboard', label: t('overview', 'My Terminal'), icon: <Home size={20} /> },
+            { id: 'schedule', label: t('overview', 'Academic Routine'), icon: <Calendar size={20} /> },
+            { id: 'curriculum', label: t('curriculum', 'Curriculum'), icon: <Book size={20} /> },
+            { id: 'leave', label: t('leaveGateway', 'Leave Application'), icon: <ClipboardList size={20} /> },
+            { id: 'settings', label: t('settings', 'Settings'), icon: <Settings size={20} /> },
+            { id: 'profile', label: t('myIdentity', 'My Profile'), icon: <User size={20} /> },
         ]
     };
 
