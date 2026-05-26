@@ -1,18 +1,7 @@
 {
-  "appTitle": "AttendFlow",
-  "dashboard": {
-    "title": "Dashboard",
-    "welcome": "Welcome, {{username}}"
-  },
-  "settings": {
-    "title": "Portal Settings",
-    "smsToggle": "Parent SMS Notifications"
-  },
-  "language": {
-    "selectorLabel": "Language",
-    "english": "English",
-    "spanish": "Spanish",
-    "french": "French",
-    "hindi": "Hindi"
-  }
+  "home": "Home",
+  "about": "About",
+  "contact": "Contact",
+  "login": "Login",
+  "welcome": "Welcome To AttendFlow"
 }

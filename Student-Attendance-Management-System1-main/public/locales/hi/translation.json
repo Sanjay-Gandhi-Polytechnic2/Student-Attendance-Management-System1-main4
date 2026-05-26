@@ -1,18 +1,7 @@
 {
-  "appTitle": "AttendFlow",
-  "dashboard": {
-    "title": "डैशबोर्ड",
-    "welcome": "स्वागत है, {{username}}"
-  },
-  "settings": {
-    "title": "पोर्टल सेटिंग्स",
-    "smsToggle": "अभिभावक SMS सूचनाएँ"
-  },
-  "language": {
-    "selectorLabel": "भाषा",
-    "english": "अंग्रेज़ी",
-    "spanish": "स्पेनिश",
-    "french": "फ़्रेंच",
-    "hindi": "हिन्दी"
-  }
+  "home": "होम",
+  "about": "हमारे बारे में",
+  "contact": "संपर्क करें",
+  "login": "लॉगिन",
+  "welcome": "अटेंडफ्लो में आपका स्वागत है"
 }
