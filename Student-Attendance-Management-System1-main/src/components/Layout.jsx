@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '../i18n';
+import LanguageSelector from './LanguageSelector';
 import {
     LayoutGrid,
     Activity,
@@ -252,6 +254,7 @@ const Layout = ({ children, activeTab, setActiveTab, logout, user, onDeleteAccou
                             <Trash2 size={16} />
                             <span className="hidden md:inline">Delete Account</span>
                         </button>
+            <LanguageSelector />
                         <div style={{ position: 'relative' }}>
                             <button 
                                 onClick={() => setShowNotifications(!showNotifications)}

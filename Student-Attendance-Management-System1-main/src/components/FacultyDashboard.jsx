@@ -82,6 +82,25 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
         setSettings(prev => ({ ...prev, darkMode: !prev.darkMode }));
     };
 
+    // Automation handlers
+    const handleSimulateSweep = async () => {
+        try {
+            const res = await api.post('/api/config/simulate-sweep');
+            setStatus({ type: 'success', message: `Sweep executed: ${res.data.sweptCount} records.` });
+        } catch (e) {
+            setStatus({ type: 'error', message: e.message });
+        }
+    };
+
+    const handleSimulateReset = async () => {
+        try {
+            const res = await api.post('/api/config/simulate-reset');
+            setStatus({ type: 'success', message: `Reset executed: ${res.data.resetCount} records.` });
+        } catch (e) {
+            setStatus({ type: 'error', message: e.message });
+        }
+    };
+
     const handleFinalizeRegistry = () => {
         setShowRegistryPopup(true);
         setTimeout(() => setShowRegistryPopup(false), 3500);
@@ -237,11 +256,21 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                             label="Update Access Key" 
                             onClick={() => setIsUpdatingKey(true)} 
                         />
-                         <ActionButton 
+                        <ActionButton 
                             icon={<Trash2 size={20} />} 
                             label="Delete Account" 
                             onClick={onDeleteAccount} 
                             isDanger
+                        />
+                        <ActionButton 
+                            icon={<RefreshCw size={20} />} 
+                            label="Simulate Sweep" 
+                            onClick={handleSimulateSweep} 
+                        />
+                        <ActionButton 
+                            icon={<RefreshCw size={20} />} 
+                            label="Simulate Reset" 
+                            onClick={handleSimulateReset} 
                         />
                         <ActionButton icon={<FileText />} label="Syllabus DCS C-25 (PDF)" onClick={() => window.open('https://dtek.karnataka.gov.in/storage/pdf-files/ACM/C_25_Draft_1_4_ComputerScience&Engineering.pdf', '_blank')} />
                         <ActionButton icon={<FileText />} label="Syllabus C-20 (Web)" onClick={() => window.open('https://dtek.karnataka.gov.in/52/c-20-syllabus/en', '_blank')} />

@@ -1,0 +1,19 @@
+
+{
+  "appTitle": "AttendFlow",
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {{username}}"
+  },
+  "settings": {
+    "title": "Portal Settings",
+    "smsToggle": "Parent SMS Notifications"
+  },
+  "language": {
+    "selectorLabel": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French",
+    "hindi": "Hindi"
+  }
+}
