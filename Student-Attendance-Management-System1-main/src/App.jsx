@@ -52,12 +52,11 @@ function App() {
             notifications: true,
             darkMode: false,
             autoBackup: false,
-            emailAlerts: true,
-            language: 'English'
+            emailAlerts: true
         };
         if (saved) {
             const parsed = JSON.parse(saved);
-            return { language: 'English', ...parsed };
+            return { ...parsed };
         }
         return defaultSettings;
     });
@@ -277,7 +276,6 @@ function App() {
                 onDeleteAccount={handleDeleteAccount}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
-                settings={settings}
             >
             {activeTab === 'home' && (
                 <HomePage 

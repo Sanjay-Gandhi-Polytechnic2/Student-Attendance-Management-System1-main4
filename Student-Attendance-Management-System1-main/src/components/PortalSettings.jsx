@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Bell, Eye, Trash2, Globe, Cpu, Lock, XCircle, Send, CheckCircle, Activity, Clock, Zap, RefreshCw } from 'lucide-react';
 import { api } from '../api';
-import { translations } from '../utils/langUtils';
 
 const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig, onDeleteAccount, onSyncRegistry }) => {
-    const lang = settings?.language || 'English';
-    const t = (key, fallback) => {
-        return translations[lang]?.[key] || translations['English']?.[key] || fallback;
-    };
-
     const [isUpdatingKey, setIsUpdatingKey] = useState(false);
     const [currentKey, setCurrentKey] = useState('');
     const [newKey, setNewKey] = useState('');
@@ -143,8 +137,8 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
     return (
         <div className="animate-fade space-y-8">
             <header>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>{t('portalConfigTitle', 'Portal Configuration')}</h2>
-                <p style={{ color: 'var(--text-secondary)' }}>{t('sysPreferences', 'System preferences and operational parameters')}</p>
+                <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Portal Configuration</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>System preferences and operational parameters</p>
             </header>
 
             {status.message && (
@@ -173,49 +167,29 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                         <div style={{ padding: '0.75rem', background: 'var(--bg-tertiary)', borderRadius: '12px', color: 'var(--primary-color)' }}>
                             <Cpu size={24} />
                         </div>
-                        <h3 style={{ fontWeight: 700 }}>{t('interfaceProtocols', 'Interface Protocols')}</h3>
+                        <h3 style={{ fontWeight: 700 }}>Interface Protocols</h3>
                     </div>
 
                     <div className="space-y-6">
                         <ToggleItem 
-                            icon={<Bell />} label={t('telemetryAlerts', 'Telemetry Alerts')} 
-                            desc={t('telemetryDesc', 'Receive real-time notifications about node status')}
+                            icon={<Bell />} label="Telemetry Alerts" 
+                            desc="Receive real-time notifications about node status"
                             active={settings.notifications} onToggle={toggleNotification}
                         />
                         <ToggleItem 
-                            icon={<Eye />} label={t('darkInterface', 'Dark Interface')} 
-                            desc={t('darkDesc', 'Optimize visual output for low-light environments')}
+                            icon={<Eye />} label="Dark Interface" 
+                            desc="Optimize visual output for low-light environments"
                             active={settings.darkMode} onToggle={toggleDarkMode}
                         />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                <Globe size={20} className="text-indigo-500" />
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--bg-secondary)', borderRadius: '12px' }}>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <Globe size={20} className="text-gray-400" />
                                 <div>
-                                    <p style={{ fontWeight: 600, fontSize: '0.875rem' }}>{t('globalLanguage', 'Global Language')}</p>
+                                    <p style={{ fontWeight: 600, fontSize: '0.875rem' }}>Global Language</p>
                                     <p style={{ fontSize: '0.75rem', color: 'var(--text-light)' }}>Portal regional configuration</p>
                                 </div>
                             </div>
-                            <select 
-                                value={settings.language || 'English'}
-                                onChange={(e) => setSettings(prev => ({ ...prev, language: e.target.value }))}
-                                style={{ 
-                                    background: 'var(--bg-primary)', 
-                                    border: '1px solid var(--border-color)', 
-                                    borderRadius: '8px', 
-                                    padding: '0.5rem 1rem', 
-                                    fontWeight: 700, 
-                                    fontSize: '0.875rem',
-                                    color: 'var(--text-primary)',
-                                    cursor: 'pointer',
-                                    outline: 'none'
-                                }}
-                            >
-                                <option value="English">English</option>
-                                <option value="Spanish">Spanish</option>
-                                <option value="Hindi">Hindi</option>
-                                <option value="Kannada">Kannada</option>
-                                <option value="Telugu">Telugu</option>
-                            </select>
+                            <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>ENGLISH (US)</span>
                         </div>
                     </div>
                 </div>
@@ -226,7 +200,7 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                         <div style={{ padding: '0.75rem', background: 'var(--bg-tertiary)', borderRadius: '12px', color: 'var(--primary-color)' }}>
                             <Lock size={24} />
                         </div>
-                        <h3 style={{ fontWeight: 700 }}>{t('securityMatrix', 'Security Matrix')}</h3>
+                        <h3 style={{ fontWeight: 700 }}>Security Matrix</h3>
                     </div>
 
                     <div className="space-y-4">
@@ -236,22 +210,22 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                         >
                             <div className="flex gap-3">
                                 <Lock size={18} />
-                                <span style={{ fontWeight: 600 }}>{t('updateAccessKey', 'Update Access Key')}</span>
+                                <span style={{ fontWeight: 600 }}>Update Access Key</span>
                             </div>
-                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-light)' }}>{t('pinRequired', 'PIN REQUIRED')}</span>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-light)' }}>PIN REQUIRED</span>
                         </button>
 
                         <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#fef2f2', borderRadius: '16px', border: '1px solid #fee2e2' }}>
-                            <h4 style={{ color: '#991b1b', fontWeight: 700, marginBottom: '0.5rem' }}>{t('criticalZone', 'Critical Zone')}</h4>
+                            <h4 style={{ color: '#991b1b', fontWeight: 700, marginBottom: '0.5rem' }}>Critical Zone</h4>
                             <p style={{ fontSize: '0.8125rem', color: '#991b1b', opacity: 0.8, marginBottom: '1rem' }}>
-                                {t('accountTerminationDesc', 'Account termination is an irreversible operational command.')}
+                                Account termination is an irreversible operational command.
                             </p>
                             <button 
                                 onClick={onDeleteAccount}
                                 style={{ width: '100%', padding: '0.75rem', background: 'white', border: '1px solid #fca5a5', borderRadius: '10px', color: '#dc2626', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             >
                                 <Trash2 size={16} style={{ marginRight: '0.5rem' }} />
-                                {t('terminateNode', 'Terminate Account Node')}
+                                Terminate Account Node
                             </button>
                         </div>
                     </div>
@@ -265,20 +239,20 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                 <Zap size={24} />
                             </div>
                             <div>
-                                <h3 style={{ fontWeight: 700, margin: 0 }}>{t('automationProtocols', 'Attendance Automation Protocols')}</h3>
-                                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{t('automationSubtitle', 'Configure background engines and simulation telemetry overrides')}</p>
+                                <h3 style={{ fontWeight: 700, margin: 0 }}>Attendance Automation Protocols</h3>
+                                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Configure background engines and simulation telemetry overrides</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Live Rules Toggles */}
                             <div className="space-y-6">
-                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>{t('automationParameters', 'Automation Parameters')}</h4>
+                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>Automation Parameters</h4>
                                 
                                 <ToggleItem 
                                     icon={<Activity />} 
-                                    label={t('autoAbsentSweep', 'Automated Absent Sweep')} 
-                                    desc={t('autoAbsentSweepDesc', 'Sweeps and marks inactive/pending students absent daily at cutoff time')}
+                                    label="Automated Absent Sweep" 
+                                    desc="Sweeps and marks inactive/pending students absent daily at cutoff time"
                                     active={autoConfig.autoAbsentActive} 
                                     onToggle={() => updateAutoConfigField('autoAbsentActive', !autoConfig.autoAbsentActive)}
                                 />
@@ -286,7 +260,7 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                 {autoConfig.autoAbsentActive && (
                                     <div style={{ paddingLeft: '2.5rem' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
-                                            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>{t('sweepCutoffTime', 'Sweep Cutoff Time')}</span>
+                                            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Sweep Cutoff Time</span>
                                             <input 
                                                 type="time" 
                                                 value={autoConfig.autoAbsentTime} 
@@ -299,16 +273,16 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
 
                                 <ToggleItem 
                                     icon={<Bell />} 
-                                    label={t('parentEmailNotify', 'Parent Email Notifications')} 
-                                    desc={t('parentEmailNotifyDesc', 'Dispatches email telemetry alerts directly to parents when marked absent')}
+                                    label="Parent Email Notifications" 
+                                    desc="Dispatches email telemetry alerts directly to parents when marked absent"
                                     active={autoConfig.autoNotifyActive} 
                                     onToggle={() => updateAutoConfigField('autoNotifyActive', !autoConfig.autoNotifyActive)}
                                 />
 
                                 <ToggleItem 
                                     icon={<Send />} 
-                                    label={t('parentSmsNotify', 'Parent SMS Notifications')} 
-                                    desc={t('parentSmsNotifyDesc', 'Dispatches real-time SMS alerts (real/simulated) directly to parent mobile numbers on absence')}
+                                    label="Parent SMS Notifications" 
+                                    desc="Dispatches real-time SMS alerts (real/simulated) directly to parent mobile numbers on absence"
                                     active={autoConfig.smsNotifyActive} 
                                     onToggle={() => updateAutoConfigField('smsNotifyActive', !autoConfig.smsNotifyActive)}
                                 />
@@ -317,8 +291,8 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     <div style={{ display: 'flex', gap: '1rem' }}>
                                         <Clock size={20} className="text-indigo-500" />
                                         <div>
-                                            <p style={{ fontWeight: 600, fontSize: '0.875rem' }}>{t('midnightSessionReset', 'Midnight Session Reset')}</p>
-                                            <p style={{ fontSize: '0.75rem', color: 'var(--text-light)' }}>{t('midnightSessionDesc', 'Automatic cycle daily restoration')}</p>
+                                            <p style={{ fontWeight: 600, fontSize: '0.875rem' }}>Midnight Session Reset</p>
+                                            <p style={{ fontSize: '0.75rem', color: 'var(--text-light)' }}>Automatic cycle daily restoration</p>
                                         </div>
                                     </div>
                                     <input 
@@ -332,9 +306,9 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
 
                             {/* Telemetry Simulator Override */}
                             <div className="space-y-6" style={{ borderLeft: '1px dashed var(--border-color)', paddingLeft: '2rem' }}>
-                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>{t('telemetryOverrides', 'Telemetry Overrides')}</h4>
+                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>Telemetry Overrides</h4>
                                 <p style={{ fontSize: '0.75rem', color: 'var(--text-light)', lineHeight: 1.5 }}>
-                                    {t('simulationDesc', 'Forces instant manual simulation of background services for live demonstration or instant verification cycles.')}
+                                    Forces instant manual simulation of background services for live demonstration or instant verification cycles.
                                 </p>
 
                                 <div className="space-y-4">
@@ -346,9 +320,9 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                             <RefreshCw size={18} className={isSimulatingSweep ? 'animate-spin' : ''} />
-                                            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{isSimulatingSweep ? 'Finalizing daily sweep...' : t('simulateSweep', 'Simulate End-of-Day Sweep')}</span>
+                                            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{isSimulatingSweep ? 'Finalizing daily sweep...' : 'Simulate End-of-Day Sweep'}</span>
                                         </div>
-                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, padding: '0.2rem 0.5rem', background: 'rgba(79, 70, 229, 0.1)', borderRadius: '6px' }}>{t('forceSweep', 'FORCE SWEEP')}</span>
+                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, padding: '0.2rem 0.5rem', background: 'rgba(79, 70, 229, 0.1)', borderRadius: '6px' }}>FORCE SWEEP</span>
                                     </button>
 
                                     <button 
@@ -359,9 +333,9 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                             <RefreshCw size={18} className={isSimulatingReset ? 'animate-spin' : ''} />
-                                            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{isSimulatingReset ? 'Restoring values...' : t('simulateReset', 'Simulate Midnight Cycle Reset')}</span>
+                                            <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{isSimulatingReset ? 'Restoring values...' : 'Simulate Midnight Cycle Reset'}</span>
                                         </div>
-                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, padding: '0.2rem 0.5rem', background: 'rgba(245, 158, 11, 0.1)', borderRadius: '6px' }}>{t('forceReset', 'FORCE RESET')}</span>
+                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, padding: '0.2rem 0.5rem', background: 'rgba(245, 158, 11, 0.1)', borderRadius: '6px' }}>FORCE RESET</span>
                                     </button>
                                 </div>
 
@@ -395,8 +369,8 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     <Send size={24} />
                                 </div>
                                 <div>
-                                    <h3 style={{ fontWeight: 700, margin: 0 }}>{t('parentSmsLogging', 'Parent SMS Telemetry Logging')}</h3>
-                                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{t('smsConsoleSubtitle', 'Outbound SMS transmissions, delivery status auditing, and sandboxed manual triggers')}</p>
+                                    <h3 style={{ fontWeight: 700, margin: 0 }}>Parent SMS Telemetry Logging</h3>
+                                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Outbound SMS transmissions, delivery status auditing, and sandboxed manual triggers</p>
                                 </div>
                             </div>
                             <button 
@@ -406,14 +380,14 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                 style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }}
                             >
                                 <RefreshCw size={14} className={isLoadingSmsLogs ? 'animate-spin' : ''} />
-                                {t('reloadConsole', 'Reload Console')}
+                                Reload Console
                             </button>
                         </div>
 
                         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                             {/* SMS Logs Table (Terminal Style) */}
                             <div className="xl:col-span-2 space-y-4">
-                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>{t('outboundLogs', 'Outbound Alert Logs')}</h4>
+                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>Outbound Alert Logs</h4>
                                 <div style={{ 
                                     background: 'var(--bg-secondary)', 
                                     borderRadius: '12px', 
@@ -471,7 +445,7 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
 
                             {/* SMS Sandboxed Manual Trigger */}
                             <div className="space-y-4">
-                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>{t('sandboxGateway', 'Interactive Sandbox Gateway')}</h4>
+                                <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>Interactive Sandbox Gateway</h4>
                                 <form onSubmit={handleSendTestSms} style={{ 
                                     background: 'var(--bg-secondary)', 
                                     padding: '1.5rem', 
@@ -482,11 +456,11 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     gap: '1rem'
                                 }}>
                                     <p style={{ fontSize: '0.7rem', color: 'var(--text-light)', lineHeight: 1.4 }}>
-                                        {t('smsSandboxDesc', 'Verify gateway cellular transmission. Valid international numbers are required for Textbelt dispatches.')}
+                                        Verify gateway cellular transmission. Valid international numbers (e.g. <code>+919876543210</code>) are required for Textbelt dispatches.
                                     </p>
                                     
                                     <div>
-                                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>{t('parentMobileNo', 'Parent Mobile Number')}</label>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Parent Mobile Number</label>
                                         <input 
                                             type="tel" 
                                             placeholder="+919876543210" 
@@ -498,7 +472,7 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     </div>
 
                                     <div>
-                                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>{t('studentNameOptional', 'Student Name (Optional)')}</label>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Student Name (Optional)</label>
                                         <input 
                                             type="text" 
                                             placeholder="E.g., Alice Johnson" 
@@ -509,7 +483,7 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                     </div>
 
                                     <div>
-                                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>{t('msgPayloadOptional', 'Message Payload (Optional)')}</label>
+                                        <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Message Payload (Optional)</label>
                                         <textarea 
                                             placeholder="Enter custom SMS body..." 
                                             rows="2"
@@ -526,7 +500,7 @@ const PortalSettings = ({ user, settings, setSettings, autoConfig, setAutoConfig
                                         style={{ width: '100%', height: '42px', justifyContent: 'center', gap: '0.5rem', fontSize: '0.8rem' }}
                                     >
                                         <Send size={14} />
-                                        {isSendingTestSms ? 'Transmitting payload...' : t('transmitSandboxAlert', 'Transmit Sandbox Alert')}
+                                        {isSendingTestSms ? 'Transmitting payload...' : 'Transmit Sandbox Alert'}
                                     </button>
                                 </form>
                             </div>

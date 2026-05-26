@@ -4,14 +4,8 @@ import { Activity, Users, CheckCircle, Clock, Download, FileText, UserPlus, Lock
 import { api } from '../api';
 import { generateStudentReport, generateRegistryExport, generateMasterReport } from '../utils/exportUtils';
 import ClassSchedule from './ClassSchedule';
-import { translations } from '../utils/langUtils';
 
 const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQuery = '', settings, setSettings, onDeleteAccount }) => {
-    const lang = settings?.language || 'English';
-    const t = (key, fallback) => {
-        return translations[lang]?.[key] || translations['English']?.[key] || fallback;
-    };
-
     const [showRegistryPopup, setShowRegistryPopup] = useState(false);
     const [isUpdatingKey, setIsUpdatingKey] = useState(false);
     const [oldKey, setOldKey] = useState('');
@@ -126,8 +120,8 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
         <div className="animate-fade space-y-6">
             <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <div>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>{t('welcome', 'Welcome')}, {user?.username}</h2>
-                    <p style={{ color: 'var(--text-secondary)' }}>{t('facultyDashboard', 'Faculty Dashboard & Management Terminal')}</p>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Welcome, {user?.username}</h2>
+                    <p style={{ color: 'var(--text-secondary)' }}>Faculty Dashboard & Management Terminal</p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <button 
@@ -136,7 +130,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                         style={{ height: '48px', padding: '0 1.5rem', fontWeight: 700, borderColor: 'var(--success-color)', color: 'var(--success-color)' }}
                     >
                         <CheckCircle size={18} />
-                        {t('finalizeRegistry', 'Finalize Registry')}
+                        Finalize Registry
                     </button>
                     <button 
                         onClick={() => generateMasterReport(students)}
@@ -144,7 +138,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                         style={{ height: '48px', padding: '0 1.5rem', fontWeight: 700, borderColor: 'var(--primary-color)', color: 'var(--primary-color)' }}
                     >
                         <FileText size={18} />
-                        {t('exportMaster', 'Export Master')}
+                        Export Master
                     </button>
                     <button 
                         onClick={() => onNavigateToAttendance('reports')}
@@ -152,7 +146,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                         style={{ height: '48px', padding: '0 1.5rem', fontWeight: 700 }}
                     >
                         <Activity size={18} />
-                        {t('viewReports', 'View Reports')}
+                        View Reports
                     </button>
                 </div>
             </header>
@@ -177,14 +171,14 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <DashboardCard icon={<Activity />} title={t('liveClasses', 'Live Classes')} value="04" color="#6366f1" />
-                <DashboardCard icon={<Users />} title={t('totalStudents', 'Total Students')} value={totalStudents || "..."} color="#10b981" />
-                <DashboardCard icon={<CheckCircle />} title={t('avgAttendance', 'Avg Attendance')} value={`${avgAttendance}%`} color="#10b981" />
-                <DashboardCard icon={<Clock />} title={t('pendingRecords', 'Pending Records')} value={pendingActions} color="#f59e0b" />
+                <DashboardCard icon={<Activity />} title="Live Classes" value="04" color="#6366f1" />
+                <DashboardCard icon={<Users />} title="Total Students" value={totalStudents || "..."} color="#10b981" />
+                <DashboardCard icon={<CheckCircle />} title="Avg Attendance" value={`${avgAttendance}%`} color="#10b981" />
+                <DashboardCard icon={<Clock />} title="Pending Records" value={pendingActions} color="#f59e0b" />
             </div>
 
             <div className="card" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-light)', textTransform: 'uppercase' }}>{t('sectionFilter', 'Section Filter')}:</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-light)', textTransform: 'uppercase' }}>Section Filter:</span>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {['All', 'A', 'B', 'C', 'D'].map(s => (
                         <button 
@@ -211,7 +205,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card">
-                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>{t('recentClassActivity', 'Recent Class Activity')}</h3>
+                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>Recent Class Activity</h3>
                     <div className="space-y-4">
                         {recentActivity.length > 0 ? (
                             recentActivity.map((act, i) => (
@@ -224,28 +218,28 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                 </div>
 
                 <div className="card">
-                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>{t('sessionProtocols', 'Session Protocols')}</h3>
+                    <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>Session Protocols</h3>
                     <div className="grid grid-cols-2 gap-4">
-                        <ActionButton icon={<Users />} label={t('studentRegistry', 'Student Registry')} onClick={() => onNavigateToAttendance('students')} />
-                        <ActionButton icon={<CheckCircle />} label={t('facultyAttendanceEntry', 'Faculty Attendance Entry')} onClick={() => onNavigateToAttendance('faculty-attendance')} />
-                        <ActionButton icon={<UserPlus size={20} />} label={t('memberDirectory', 'Member Directory')} onClick={() => onNavigateToAttendance('students')} />
-                        <ActionButton icon={<Download />} label={t('downloadRegistry', 'Download Registry')} onClick={() => generateRegistryExport(students)} />
-                        <ActionButton icon={<FileText />} label={t('generateReport', 'Generate Report')} onClick={() => generateStudentReport(students)} />
-                        <ActionButton icon={<Clock />} label={t('leaveGateway', 'Leave Gateway')} onClick={() => onNavigateToAttendance('leave')} />
+                        <ActionButton icon={<Users />} label="Student Registry" onClick={() => onNavigateToAttendance('students')} />
+                        <ActionButton icon={<CheckCircle />} label="Faculty Attendance Entry" onClick={() => onNavigateToAttendance('faculty-attendance')} />
+                        <ActionButton icon={<UserPlus size={20} />} label="Member Directory" onClick={() => onNavigateToAttendance('students')} />
+                        <ActionButton icon={<Download />} label="Download Registry" onClick={() => generateRegistryExport(students)} />
+                        <ActionButton icon={<FileText />} label="Generate Report" onClick={() => generateStudentReport(students)} />
+                        <ActionButton icon={<Clock />} label="Leave Gateway" onClick={() => onNavigateToAttendance('leave')} />
                         <ActionButton 
                             icon={<Eye size={20} />} 
-                            label={t('darkInterface', 'Dark Interface')} 
+                            label="Dark Interface" 
                             onClick={toggleDarkMode} 
                             highlight={settings?.darkMode} 
                         />
                          <ActionButton 
                             icon={<Lock size={20} />} 
-                            label={t('updateAccessKey', 'Update Access Key')} 
+                            label="Update Access Key" 
                             onClick={() => setIsUpdatingKey(true)} 
                         />
                          <ActionButton 
                             icon={<Trash2 size={20} />} 
-                            label={t('deleteAccount', 'Delete Account')} 
+                            label="Delete Account" 
                             onClick={onDeleteAccount} 
                             isDanger
                         />
@@ -267,8 +261,8 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                             <Send size={24} />
                         </div>
                         <div>
-                            <h3 style={{ fontWeight: 700, margin: 0 }}>{t('parentSmsLogging', 'Parent SMS Telemetry Logging')}</h3>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>{t('smsConsoleSubtitle', 'Outbound SMS transmissions, delivery status auditing, and sandboxed manual triggers')}</p>
+                            <h3 style={{ fontWeight: 700, margin: 0 }}>Parent SMS Telemetry Logging</h3>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Outbound SMS transmissions, delivery status auditing, and sandboxed manual triggers</p>
                         </div>
                     </div>
                     <button 
@@ -278,14 +272,14 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                         style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }}
                     >
                         <RefreshCw size={14} className={isLoadingSmsLogs ? 'animate-spin' : ''} />
-                        {t('reloadConsole', 'Reload Console')}
+                        Reload Console
                     </button>
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                     {/* SMS Logs Table (Terminal Style) */}
                     <div className="xl:col-span-2 space-y-4">
-                        <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>{t('outboundLogs', 'Outbound Alert Logs')}</h4>
+                        <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>Outbound Alert Logs</h4>
                         <div style={{ 
                             background: 'var(--bg-secondary)', 
                             borderRadius: '12px', 
@@ -343,7 +337,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
 
                     {/* SMS Sandboxed Manual Trigger */}
                     <div className="space-y-4">
-                        <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>{t('sandboxGateway', 'Interactive Sandbox Gateway')}</h4>
+                        <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>Interactive Sandbox Gateway</h4>
                         <form onSubmit={handleSendTestSms} style={{ 
                             background: 'var(--bg-primary)', 
                             padding: '1.5rem', 
@@ -354,11 +348,11 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                             gap: '1rem'
                         }}>
                             <p style={{ fontSize: '0.7rem', color: 'var(--text-light)', lineHeight: 1.4 }}>
-                                {t('smsSandboxDesc', 'Verify gateway cellular transmission. Valid international numbers are required for Textbelt dispatches.')}
+                                Verify gateway cellular transmission. Valid international numbers (e.g. <code>+919876543210</code>) are required for Textbelt dispatches.
                             </p>
                             
                             <div>
-                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>{t('parentMobileNo', 'Parent Mobile Number')}</label>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Parent Mobile Number</label>
                                 <input 
                                     type="tel" 
                                     placeholder="+919876543210" 
@@ -370,7 +364,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                             </div>
 
                             <div>
-                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>{t('studentNameOptional', 'Student Name (Optional)')}</label>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Student Name (Optional)</label>
                                 <input 
                                     type="text" 
                                     placeholder="E.g., Alice Johnson" 
@@ -381,7 +375,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                             </div>
 
                             <div>
-                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>{t('msgPayloadOptional', 'Message Payload (Optional)')}</label>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Message Payload (Optional)</label>
                                 <textarea 
                                     placeholder="Enter custom SMS body..." 
                                     rows="2"
@@ -398,7 +392,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                                 style={{ width: '100%', height: '42px', justifyContent: 'center', gap: '0.5rem', fontSize: '0.8rem' }}
                             >
                                 <Send size={14} />
-                                {isSendingTestSms ? 'Transmitting payload...' : t('transmitSandboxAlert', 'Transmit Sandbox Alert')}
+                                {isSendingTestSms ? 'Transmitting payload...' : 'Transmit Sandbox Alert'}
                             </button>
                         </form>
                     </div>
@@ -406,7 +400,7 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
             </div>
 
             <div className="card">
-                <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>{t('teamMembers', 'The Team Members')}</h3>
+                <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>The Team Members</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
                     {teamMembers.length > 0 ? teamMembers.map((name, idx) => (
                         <div key={idx} style={{ 
