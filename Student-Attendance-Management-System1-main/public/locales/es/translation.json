@@ -1,0 +1,18 @@
+{
+  "appTitle": "AttendFlow",
+  "dashboard": {
+    "title": "Tablero",
+    "welcome": "Bienvenido, {{username}}"
+  },
+  "settings": {
+    "title": "Configuración del Portal",
+    "smsToggle": "Notificaciones SMS a Padres"
+  },
+  "language": {
+    "selectorLabel": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "french": "Francés",
+    "hindi": "Hindi"
+  }
+}
