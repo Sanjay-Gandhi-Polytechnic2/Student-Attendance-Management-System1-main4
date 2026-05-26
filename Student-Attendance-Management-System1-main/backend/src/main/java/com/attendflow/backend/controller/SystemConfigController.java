@@ -34,6 +34,7 @@ public class SystemConfigController {
                     config.setAutoAbsentActive(newConfig.isAutoAbsentActive());
                     config.setAutoAbsentTime(newConfig.getAutoAbsentTime());
                     config.setAutoNotifyActive(newConfig.isAutoNotifyActive());
+                    config.setSmsNotifyActive(newConfig.isSmsNotifyActive());
                     config.setAutoResetTime(newConfig.getAutoResetTime());
                     return ResponseEntity.ok(systemConfigRepository.save(config));
                 })

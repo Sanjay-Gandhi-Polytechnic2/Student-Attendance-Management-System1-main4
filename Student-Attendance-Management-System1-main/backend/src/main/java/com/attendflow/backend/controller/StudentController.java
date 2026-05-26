@@ -17,6 +17,12 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private com.attendflow.backend.service.SmsService smsService;
+
+    @Autowired
+    private com.attendflow.backend.repository.SystemConfigRepository systemConfigRepository;
+
     @GetMapping
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
@@ -37,6 +43,15 @@ public class StudentController {
                         student.setPresentCount(student.getPresentCount() + 1);
                     } else if ("Absent".equalsIgnoreCase(newStatus)) {
                         student.setAbsentCount(student.getAbsentCount() + 1);
+                        try {
+                            systemConfigRepository.findById(1L).ifPresent(config -> {
+                                if (config.isSmsNotifyActive()) {
+                                    smsService.sendAttendanceAlert(student, "Absent");
+                                }
+                            });
+                        } catch (Exception ex) {
+                            System.err.println("[STUDENT CONTROLLER] Failed to send automated SMS: " + ex.getMessage());
+                        }
                     }
                     
                     student.setStatus(newStatus);

@@ -50,7 +50,7 @@ public class DataInitializer {
 
             // Default Automatic Attendance Configuration
             if (systemConfigRepository.count() == 0) {
-                systemConfigRepository.save(new SystemConfig(1L, true, "17:00", true, "00:00"));
+                systemConfigRepository.save(new SystemConfig(1L, true, "17:00", true, true, "00:00"));
                 System.out.println("Inserted default automatic attendance configuration.");
             } else {
                 System.out.println("System configuration already exists. Skipping initialization.");

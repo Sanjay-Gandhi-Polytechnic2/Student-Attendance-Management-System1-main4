@@ -19,5 +19,6 @@ public class SystemConfig {
     private boolean autoAbsentActive;
     private String autoAbsentTime; // e.g., "17:00"
     private boolean autoNotifyActive;
+    private boolean smsNotifyActive;
     private String autoResetTime; // e.g., "00:00"
 }

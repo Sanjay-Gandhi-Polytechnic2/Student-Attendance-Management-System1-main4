@@ -31,6 +31,9 @@ public class AttendanceAutomationService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private SmsService smsService;
+
     private String lastSweepDate = "";
     private String lastResetDate = "";
 
@@ -139,6 +142,15 @@ public class AttendanceAutomationService {
             System.out.println("[AUTOMATION] Automated absence alert email dispatched for " + student.getName() + " to " + recipientEmail);
         } catch (Exception e) {
             System.err.println("[AUTOMATION] Failed to dispatch automated alert for " + student.getName() + ": " + e.getMessage());
+        }
+
+        try {
+            Optional<SystemConfig> configOpt = systemConfigRepository.findById(1L);
+            if (configOpt.isPresent() && configOpt.get().isSmsNotifyActive()) {
+                smsService.sendAttendanceAlert(student, "Absent");
+            }
+        } catch (Exception smsEx) {
+            System.err.println("[AUTOMATION] Failed to dispatch automated SMS for " + student.getName() + ": " + smsEx.getMessage());
         }
     }
 }

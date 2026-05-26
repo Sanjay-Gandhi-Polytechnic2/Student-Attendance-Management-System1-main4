@@ -390,6 +390,32 @@ export const api = {
             console.error('Delete schedule slot error:', error);
             throw error;
         }
+    },
+
+    async getSmsLogs() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/sms/logs`);
+            if (!response.ok) throw new Error('Failed to fetch SMS logs');
+            return response.json();
+        } catch (error) {
+            console.error('Fetch SMS logs error:', error);
+            throw error;
+        }
+    },
+
+    async sendTestSms(phone, studentName, message) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/sms/send-test`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, studentName, message })
+            });
+            if (!response.ok) throw new Error('Failed to dispatch test SMS');
+            return response.json();
+        } catch (error) {
+            console.error('Send test SMS error:', error);
+            throw error;
+        }
     }
 };
 
