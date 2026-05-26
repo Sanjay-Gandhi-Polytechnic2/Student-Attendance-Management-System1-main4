@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/leave-requests/**").permitAll()
                         .requestMatchers("/api/schedule/**").permitAll()
                         .requestMatchers("/api/config/**").permitAll()
+                        .requestMatchers("/api/sms/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

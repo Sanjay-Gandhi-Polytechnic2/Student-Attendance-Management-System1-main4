@@ -1,4 +1,6 @@
+com\attendflow\backend\controller\SmsController.class
 com\attendflow\backend\controller\SystemConfigController.class
+com\attendflow\backend\repository\SmsLogRepository.class
 com\attendflow\backend\repository\LeaveRequestRepository.class
 com\attendflow\backend\model\LeaveRequest.class
 com\attendflow\backend\config\DataInitializer.class
@@ -6,10 +8,12 @@ com\attendflow\backend\model\SystemConfig.class
 com\attendflow\backend\repository\StudentRepository.class
 com\attendflow\backend\service\EmailService.class
 com\attendflow\backend\repository\TimetableSlotRepository.class
+com\attendflow\backend\service\SmsService.class
 com\attendflow\backend\controller\StudentController.class
 com\attendflow\backend\controller\TimetableSlotController.class
 com\attendflow\backend\model\User.class
 com\attendflow\backend\model\Student.class
+com\attendflow\backend\model\SmsLog.class
 com\attendflow\backend\model\TimetableSlot.class
 com\attendflow\backend\repository\SystemConfigRepository.class
 com\attendflow\backend\AttendFlowApplication.class
