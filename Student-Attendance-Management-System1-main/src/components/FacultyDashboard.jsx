@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Users, CheckCircle, Clock, Download, FileText, UserPlus, Lock, Eye, Send, XCircle, Trash2 } from 'lucide-react';
+import { Activity, Users, CheckCircle, Clock, Download, FileText, UserPlus, Lock, Eye, Send, XCircle, Trash2, RefreshCw } from 'lucide-react';
 import { api } from '../api';
 import { generateStudentReport, generateRegistryExport, generateMasterReport } from '../utils/exportUtils';
 import ClassSchedule from './ClassSchedule';
@@ -12,6 +12,53 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
     const [newKey, setNewKey] = useState('');
     const [status, setStatus] = useState({ type: '', message: '' });
     const [selectedSection, setSelectedSection] = useState('All');
+
+    // SMS states
+    const [smsLogs, setSmsLogs] = useState([]);
+    const [isLoadingSmsLogs, setIsLoadingSmsLogs] = useState(false);
+    const [testPhone, setTestPhone] = useState('');
+    const [testStudentName, setTestStudentName] = useState('');
+    const [testMessage, setTestMessage] = useState('');
+    const [isSendingTestSms, setIsSendingTestSms] = useState(false);
+
+    const fetchSmsLogs = async () => {
+        setIsLoadingSmsLogs(true);
+        try {
+            const logs = await api.getSmsLogs();
+            setSmsLogs(logs);
+        } catch (error) {
+            console.error('Failed to load SMS logs:', error);
+        } finally {
+            setIsLoadingSmsLogs(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchSmsLogs();
+    }, []);
+
+    const handleSendTestSms = async (e) => {
+        e.preventDefault();
+        if (!testPhone) return;
+        setIsSendingTestSms(true);
+        try {
+            const res = await api.sendTestSms(testPhone, testStudentName, testMessage);
+            setStatus({ 
+                type: 'success', 
+                message: `SMS processed! Gateway Status: ${res.status || 'SUCCESS'}` 
+            });
+            setTestPhone('');
+            setTestStudentName('');
+            setTestMessage('');
+            fetchSmsLogs();
+            setTimeout(() => setStatus({ type: '', message: '' }), 5000);
+        } catch (error) {
+            setStatus({ type: 'error', message: error.message });
+            setTimeout(() => setStatus({ type: '', message: '' }), 5000);
+        } finally {
+            setIsSendingTestSms(false);
+        }
+    };
 
     const handleUpdateKey = async (e) => {
         e.preventDefault();
@@ -104,6 +151,25 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                 </div>
             </header>
 
+            {status.message && (
+                <div style={{ 
+                    padding: '1rem', 
+                    borderRadius: '12px', 
+                    background: status.type === 'success' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                    color: status.type === 'success' ? 'var(--success-color)' : 'var(--error-color)',
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    border: status.type === 'success' ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(239, 68, 68, 0.2)',
+                    boxShadow: 'var(--shadow-sm)'
+                }}>
+                    {status.type === 'success' ? <CheckCircle size={18} /> : <XCircle size={18} />}
+                    {status.message}
+                </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <DashboardCard icon={<Activity />} title="Live Classes" value="04" color="#6366f1" />
                 <DashboardCard icon={<Users />} title="Total Students" value={totalStudents || "..."} color="#10b981" />
@@ -187,6 +253,151 @@ const FacultyDashboard = ({ user, students = [], onNavigateToAttendance, searchQ
                 </div>
             </div>
             <ClassSchedule />
+
+            <div className="card space-y-6">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ padding: '0.75rem', background: 'rgba(79, 70, 229, 0.1)', borderRadius: '12px', color: 'var(--primary-color)' }}>
+                            <Send size={24} />
+                        </div>
+                        <div>
+                            <h3 style={{ fontWeight: 700, margin: 0 }}>Parent SMS Telemetry Logging</h3>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Outbound SMS transmissions, delivery status auditing, and sandboxed manual triggers</p>
+                        </div>
+                    </div>
+                    <button 
+                        onClick={fetchSmsLogs} 
+                        disabled={isLoadingSmsLogs}
+                        className="btn btn-secondary" 
+                        style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }}
+                    >
+                        <RefreshCw size={14} className={isLoadingSmsLogs ? 'animate-spin' : ''} />
+                        Reload Console
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    {/* SMS Logs Table (Terminal Style) */}
+                    <div className="xl:col-span-2 space-y-4">
+                        <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--primary-color)', textTransform: 'uppercase', tracking: 'wide' }}>Outbound Alert Logs</h4>
+                        <div style={{ 
+                            background: 'var(--bg-secondary)', 
+                            borderRadius: '12px', 
+                            border: '1px solid var(--border-color)',
+                            overflow: 'hidden',
+                            maxHeight: '350px',
+                            overflowY: 'auto'
+                        }}>
+                            {smsLogs.length === 0 ? (
+                                <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-light)', fontSize: '0.85rem' }}>
+                                    <Send size={32} style={{ margin: '0 auto 1rem', opacity: 0.3 }} />
+                                    No outbound SMS transmissions logged in this session
+                                </div>
+                            ) : (
+                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', textAlign: 'left' }}>
+                                    <thead>
+                                        <tr style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontWeight: 700 }}>
+                                            <th style={{ padding: '0.75rem 1rem' }}>Student</th>
+                                            <th style={{ padding: '0.75rem 1rem' }}>Recipient No.</th>
+                                            <th style={{ padding: '0.75rem 1rem' }}>Message Payload</th>
+                                            <th style={{ padding: '0.75rem 1rem' }}>Sent Time</th>
+                                            <th style={{ padding: '0.75rem 1rem' }}>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {smsLogs.map((log) => (
+                                            <tr key={log.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                <td style={{ padding: '0.75rem 1rem', fontWeight: 600 }}>{log.studentName}</td>
+                                                <td style={{ padding: '0.75rem 1rem', fontFamily: 'monospace' }}>{log.recipientNumber}</td>
+                                                <td style={{ padding: '0.75rem 1rem', color: 'var(--text-secondary)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={log.messageContent}>
+                                                    {log.messageContent}
+                                                </td>
+                                                <td style={{ padding: '0.75rem 1rem', color: 'var(--text-light)' }}>{log.sentTime}</td>
+                                                <td style={{ padding: '0.75rem 1rem' }}>
+                                                    <span style={{ 
+                                                        display: 'inline-block',
+                                                        padding: '0.2rem 0.5rem',
+                                                        borderRadius: '6px',
+                                                        fontSize: '0.7rem',
+                                                        fontWeight: 800,
+                                                        background: log.status?.includes('DELIVERED') ? 'rgba(16, 185, 129, 0.1)' : 'rgba(79, 70, 229, 0.1)',
+                                                        color: log.status?.includes('DELIVERED') ? 'var(--success-color)' : 'var(--primary-color)',
+                                                        border: log.status?.includes('DELIVERED') ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(79, 70, 229, 0.2)'
+                                                    }}>
+                                                        {log.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* SMS Sandboxed Manual Trigger */}
+                    <div className="space-y-4">
+                        <h4 style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--success-color)', textTransform: 'uppercase', tracking: 'wide' }}>Interactive Sandbox Gateway</h4>
+                        <form onSubmit={handleSendTestSms} style={{ 
+                            background: 'var(--bg-primary)', 
+                            padding: '1.5rem', 
+                            borderRadius: '12px', 
+                            border: '1px solid var(--border-color)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1rem'
+                        }}>
+                            <p style={{ fontSize: '0.7rem', color: 'var(--text-light)', lineHeight: 1.4 }}>
+                                Verify gateway cellular transmission. Valid international numbers (e.g. <code>+919876543210</code>) are required for Textbelt dispatches.
+                            </p>
+                            
+                            <div>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Parent Mobile Number</label>
+                                <input 
+                                    type="tel" 
+                                    placeholder="+919876543210" 
+                                    required 
+                                    value={testPhone}
+                                    onChange={(e) => setTestPhone(e.target.value)}
+                                    style={{ width: '100%', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.5rem 0.75rem', fontSize: '0.8rem', background: 'var(--bg-secondary)', fontWeight: 600 }}
+                                />
+                            </div>
+
+                            <div>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Student Name (Optional)</label>
+                                <input 
+                                    type="text" 
+                                    placeholder="E.g., Alice Johnson" 
+                                    value={testStudentName}
+                                    onChange={(e) => setTestStudentName(e.target.value)}
+                                    style={{ width: '100%', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.5rem 0.75rem', fontSize: '0.8rem', background: 'var(--bg-secondary)', fontWeight: 600 }}
+                                />
+                            </div>
+
+                            <div>
+                                <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.25rem' }}>Message Payload (Optional)</label>
+                                <textarea 
+                                    placeholder="Enter custom SMS body..." 
+                                    rows="2"
+                                    value={testMessage}
+                                    onChange={(e) => setTestMessage(e.target.value)}
+                                    style={{ width: '100%', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.5rem 0.75rem', fontSize: '0.8rem', background: 'var(--bg-secondary)', fontWeight: 600, fontFamily: 'inherit', resize: 'none' }}
+                                />
+                            </div>
+
+                            <button 
+                                type="submit" 
+                                disabled={isSendingTestSms}
+                                className="btn btn-primary" 
+                                style={{ width: '100%', height: '42px', justifyContent: 'center', gap: '0.5rem', fontSize: '0.8rem' }}
+                            >
+                                <Send size={14} />
+                                {isSendingTestSms ? 'Transmitting payload...' : 'Transmit Sandbox Alert'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <div className="card">
                 <h3 style={{ marginBottom: '1.5rem', fontWeight: 700 }}>The Team Members</h3>
